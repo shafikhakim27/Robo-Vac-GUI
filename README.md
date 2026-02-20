@@ -1,33 +1,38 @@
 # RoboVac Mapping Web UI
 
-A web-based mapping and control interface for a robot vacuum system.
-Built with FastAPI (backend) and React (frontend), streaming live map
-and robot pose data over WebSockets.
+A minimal full-stack simulator that streams occupancy-grid and pose data from FastAPI to a React + TypeScript canvas viewer.
 
-## Features
-- Live occupancy grid map
-- Real-time robot pose visualization
-- WebSocket streaming
-- Zoom & pan map view
-- Zone/no-go area support (planned)
+## Project Structure
+- `backend/`: FastAPI WebSocket backend and simulator
+- `frontend/`: React + TypeScript (Vite) canvas renderer
 
-## Tech Stack
-- Backend: FastAPI (Python)
-- Frontend: React + TypeScript
-- Communication: WebSocket
+## Backend (FastAPI + WebSocket)
+The backend exposes:
+- `GET /` health route
+- `WS /ws` websocket stream
 
-## Getting Started
+On websocket connect, it sends one simulated occupancy-grid map message, then continuously streams pose updates at **15Hz**.
 
-### Backend
+### Run backend
 ```bash
 cd backend
+python -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt
-uvicorn main:app --reload
+uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 ```
 
-### Frontend
+## Frontend (React + TypeScript)
+The frontend connects to `ws://localhost:8000/ws`, parses map + pose messages, and renders:
+- Occupancy grid on HTML canvas
+- Robot as a triangle arrow from `(x, y, theta)` in meters
+- Zoom (mouse wheel) and pan (drag)
+
+### Run frontend
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
+
+Then open the dev URL (usually `http://localhost:5173`).
