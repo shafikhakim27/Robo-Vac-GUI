@@ -35,4 +35,11 @@ npm install
 npm run dev
 ```
 
+For reproducible installs (e.g., CI), prefer:
+
+```bash
+cd frontend
+npm ci
+```
+
 Then open the dev URL (usually `http://localhost:5173`).
