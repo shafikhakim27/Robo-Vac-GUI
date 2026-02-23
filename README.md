@@ -22,6 +22,11 @@ pip install -r requirements.txt
 uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 ```
 
+### Backend dependency update policy
+We use **compatible-release version specifiers** in `backend/requirements.txt` (for example `~=0.115.0`). This allows safe patch/minor updates within the same major version while preventing unreviewed major upgrades.
+
+Dependabot should update these ranges via PRs, and major-version bumps should be handled deliberately in a separate review.
+
 ## Frontend (React + TypeScript)
 The frontend connects to `ws://localhost:8000/ws`, parses map + pose messages, and renders:
 - Occupancy grid on HTML canvas
